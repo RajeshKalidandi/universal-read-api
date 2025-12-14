@@ -7,6 +7,8 @@ A serverless API that turns any URL into structured JSON data using **Cloudflare
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange.svg)
 ![Gemini AI](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-blueviolet.svg)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/RajeshKalidandi/universal-read-api/issues)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://makeapullrequest.com)
 
 ## 🚀 Features
 
@@ -27,7 +29,7 @@ A serverless API that turns any URL into structured JSON data using **Cloudflare
 
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/yourusername/universal-read-api.git
+git clone https://github.com/RajeshKalidandi/universal-read-api.git
 cd universal-read-api
 npm install
 ```
@@ -62,7 +64,7 @@ npm run deploy
 
 **Request:**
 ```bash
-curl -X POST https://your-worker.workers.dev/extract \
+curl -X POST https://universal-read-api.rajeshdev.workers.dev/extract \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://example.com",
@@ -92,13 +94,32 @@ curl -X POST https://your-worker.workers.dev/extract \
 }
 ```
 
+## 🤝 Contributing
+
+We welcome contributions! Whether it's fixing bugs, improving documentation, or adding new features.
+
+### How to Contribute
+
+1.  **Fork** the repository
+2.  **Clone** your fork: `git clone https://github.com/YOUR_USERNAME/universal-read-api.git`
+3.  **Create a branch**: `git checkout -b feature/amazing-feature`
+4.  **Make your changes**
+5.  **Commit**: `git commit -m 'Add some amazing feature'`
+6.  **Push**: `git push origin feature/amazing-feature`
+7.  **Open a Pull Request**
+
+### Ideas for Contributions
+- [ ] Add support for Puppeteer (Browser Rendering) as an optional mode
+- [ ] Add rate limiting using Cloudflare KV/Durable Objects
+- [ ] Add scraping fallback for different site structures
+- [ ] Improve prompt engineering for specific extraction types
+
 ## ⚠️ Limitations
 
 This version uses standard HTTP requests (`fetch`), not a full browser.
 - **Works great for:** Static sites, blogs, news, wiki, docs.
 - **Does not work for:** Heavy client-side rendered apps (some React/SPA sites) that require JavaScript to show *any* content.
-- *Upgrade Path:* For full browser support, you can uncomment the Puppeteer code in `src/lib/scraper.ts` and upgrade to Cloudflare Workers Paid.
 
 ## 📄 License
 
-MIT © [KrissDev](https://github.com/yourusername)
+MIT © [Rajesh Kalidandi](https://github.com/RajeshKalidandi)
