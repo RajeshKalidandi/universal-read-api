@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { z } from "zod";
 import { scrapeUrl } from "./lib/scraper";
-import { extractWithGemini } from "./lib/llm";
+import { extractWithGemini, type ExtractionType } from "./lib/llm";
 
 // Define the environment bindings type
 interface Env {
@@ -15,6 +15,9 @@ const ExtractRequestSchema = z.object({
     url: z.string().url("Invalid URL format"),
     schema: z.record(z.unknown()).optional(),
     waitFor: z.string().optional(),
+    extractionType: z
+        .enum(["auto", "article", "product", "contact", "event", "job", "recipe", "review"])
+        .optional(),
 });
 
 type ExtractRequest = z.infer<typeof ExtractRequestSchema>;
@@ -27,6 +30,7 @@ interface ExtractResponse {
         url: string;
         title: string;
         model: string;
+        extractionType: ExtractionType;
         tokensUsed?: number;
         processingTimeMs: number;
     };
@@ -51,7 +55,7 @@ app.use("*", cors());
 app.get("/", (c) => {
     return c.json({
         name: "Universal Read API",
-        version: "10.0",
+        version: "1.1.0",
         description: "Turn any website URL into structured JSON data for AI agents",
         endpoints: {
             "POST /extract": {
@@ -60,14 +64,25 @@ app.get("/", (c) => {
                     url: "string (required) - URL to scrape",
                     schema: "object (optional) - JSON schema for extraction",
                     waitFor: "string (optional) - CSS selector to wait for",
+                    extractionType: "string (optional) - One of: auto, article, product, contact, event, job, recipe, review",
                 },
             },
             "GET /health": "Health check endpoint",
         },
+        extractionTypes: {
+            auto: "Automatically detect content type",
+            article: "News articles, blog posts",
+            product: "E-commerce product pages",
+            contact: "Contact information, people",
+            event: "Events, conferences, meetups",
+            job: "Job postings, careers",
+            recipe: "Cooking recipes",
+            review: "Product/service reviews",
+        },
         example: {
             request: {
-                url: "https://example.com",
-                schema: { title: "string", summary: "string" },
+                url: "https://example.com/product/123",
+                extractionType: "product",
             },
         },
     });
@@ -105,7 +120,7 @@ app.post("/extract", async (c) => {
             return c.json(response, 400);
         }
 
-        const { url, schema, waitFor }: ExtractRequest = parseResult.data;
+        const { url, schema, waitFor, extractionType }: ExtractRequest = parseResult.data;
 
         // Check for required API key
         if (!c.env.GEMINI_API_KEY) {
@@ -132,13 +147,14 @@ app.post("/extract", async (c) => {
         // Step B: Already done in scraper (HTML -> Markdown conversion)
 
         // Step C: Extract structured data using Gemini
-        console.log(`[LLM] Sending to Gemini for extraction`);
+        console.log(`[LLM] Sending to Gemini for extraction (type: ${extractionType || "auto"})`);
         const extractionResult = await extractWithGemini(c.env.GEMINI_API_KEY, {
             markdown: scrapeResult.markdown,
             schema,
             title: scrapeResult.title,
+            extractionType,
         });
-        console.log(`[LLM] Extraction complete`);
+        console.log(`[LLM] Extraction complete (detected: ${extractionResult.extractionType})`);
 
         // Step D: Return the response
         const processingTimeMs = Date.now() - startTime;
@@ -150,6 +166,7 @@ app.post("/extract", async (c) => {
                 url: scrapeResult.url,
                 title: scrapeResult.title,
                 model: extractionResult.model,
+                extractionType: extractionResult.extractionType,
                 tokensUsed: extractionResult.tokensUsed,
                 processingTimeMs,
             },
