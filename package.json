@@ -3,6 +3,33 @@
   "version": "1.0.0",
   "description": "A serverless infrastructure tool that turns any website URL into structured JSON data for AI agents",
   "type": "module",
+  "main": "src/index.ts",
+  "keywords": [
+    "web-scraping",
+    "ai",
+    "llm",
+    "json",
+    "api",
+    "cloudflare-workers",
+    "gemini",
+    "serverless",
+    "url-to-json",
+    "data-extraction",
+    "ai-agents"
+  ],
+  "author": "Rajesh Kalidandi <rajeshdev@example.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RajeshKalidandi/universal-read-api.git"
+  },
+  "homepage": "https://github.com/RajeshKalidandi/universal-read-api#readme",
+  "bugs": {
+    "url": "https://github.com/RajeshKalidandi/universal-read-api/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",

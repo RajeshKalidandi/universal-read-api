@@ -4,11 +4,27 @@
 
 A serverless API that turns any URL into structured JSON data using **Cloudflare Workers** and **Google Gemini 2.5 Flash Lite**.
 
+[![npm version](https://img.shields.io/npm/v/universal-read-api.svg)](https://www.npmjs.com/package/universal-read-api)
+[![npm downloads](https://img.shields.io/npm/dm/universal-read-api.svg)](https://www.npmjs.com/package/universal-read-api)
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange.svg)
 ![Gemini AI](https://img.shields.io/badge/AI-Gemini%202.5%20Flash-blueviolet.svg)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/RajeshKalidandi/universal-read-api/issues)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://makeapullrequest.com)
+
+---
+
+<p align="center">
+  <img src="public/image.png" alt="Universal Read API Demo" width="800"/>
+</p>
+
+---
+
+## 📦 Installation
+
+```bash
+npm install universal-read-api
+```
 
 ## 🚀 Features
 
